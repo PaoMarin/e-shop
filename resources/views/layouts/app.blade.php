@@ -47,11 +47,41 @@
                                 @endif
                             </li>
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Categories') }}</a>
+                            </li>
+                            <li>
+                            <a class="navbar-brand" href="{{ route('login') }}">
+                                <img src="https://st2.depositphotos.com/4845131/7223/v/950/depositphotos_72232095-stock-illustration-icon-shopping-cart.jpg" height="40" alt="mdb logo">
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Checkout') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Shopping done') }}</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                 <span class="caret"></span>
+                                 {{ __('Configuration') }}
+                                </a>
+                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <?php  $user = Auth::user(); 
+                                      	$activo = $user->admmin;
+                                         if($activo === "f") :?>
+                                        <a class="dropdown-item" href="{{ route('login') }}">{{ __('Products') }}</a>
+                                        <a class="dropdown-item" href="{{ route('login') }}">{{ __('Categories') }}</a>
+                                        <?php else : ?>
+                                        <a class="dropdown-item" href="{{ route('logout') }}">{{ __('Products') }}</a>
+                                        <a class="dropdown-item" href="{{ route('logout') }}">{{ __('Categories') }}</a>
+                                        <?php endif; ?>
+                                 </div>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
-
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}">{{ __('Logout') }}</a>
                                 </div>
