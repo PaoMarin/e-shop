@@ -48,7 +48,7 @@
                             </li>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Categories') }}</a>
+                                <a class="nav-link" href="{{ route('categories') }}">{{ __('Categories') }}</a>
                             </li>
                             <li>
                             <a class="navbar-brand" href="{{ route('login') }}">

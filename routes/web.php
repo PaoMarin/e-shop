@@ -17,3 +17,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::resource('category','\App\Http\Controllers\CategoryController');
+//Route::resource('categories', '\App\Http\Controllers\CategoryController');
+Route::resource('products', '\App\Http\Controllers\ProductController');
