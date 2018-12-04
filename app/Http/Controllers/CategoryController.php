@@ -1,9 +1,10 @@
 <?php
 
+use App\Category;
 namespace App\Http\Controllers;
+use DB;
 
 use Illuminate\Http\Request;
-use App\Category;
 
 class CategoryController extends Controller
 {
@@ -12,11 +13,11 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
-    {
-        //
-        $categories=Category::orderBy('id','DESC');
-        return view('Category.index',compact('categories')); 
+    {    
+        $categories = DB::table('categories')->orderBy('id', 'desc')->paginate(10);
+        return view('categories')->with('categories', $categories);
     }
 
     /**
@@ -24,10 +25,32 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function index_categories()
+    {    
+       
+        $categories = DB::table('categories')->orderBy('id', 'desc')->paginate(10);
+        return view('categories')->with('categories', $categories);
+    }
+
+    public function getProducts($id)
+    {    
+        $products = DB::table('categories')->join('products', function ($join) use ($id){ $join->on('categories.id', '=', 'products.id_category') ->where('categories.id', '=', $id); }) 
+        ->get();
+        //dd($products);
+        return view('view_products')->with('products', $products);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
     public function create()
     {
-        
-        return view('Category.create');
+        $categories = DB::table('categories')->orderBy('id', 'desc')->paginate(10);
+        return view('create_categories')->with('categories', $categories);
     }
 
     /**
@@ -36,12 +59,15 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function store(Request $request)
     {
-        //
-        $this->validate($request,[ 'description'=>'required', 'father_category'=>'required']);
-        Category::create($request->all());
-        return redirect()->route('category.index')->with('success','Categoria creado satisfactoriamente');
+        $c = new Category;
+        $c->description = $request->description;
+        $c->father_category = $request->father_category;
+        if ($c->save()) {
+          return redirect()->action('CategoryController@index');
+        }
     }
 
     /**
@@ -50,51 +76,41 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+
+   public function show($id)
     {
-        $categories=Category::find($id);
-        return  view('category.show',compact('categories'));
+       $categories = Category::find($id);
+       return view('categories')->with('categories', $categories);
     }
 
     /**
      * Show the form for editing the specified resource.
+     *  In this case is used to update the resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //
-        $categories=Category::find($id);
-        return view('category.edit',compact('categories'));
+        $category=Category::find($id);
+        //$categories = DB::table('categories')->orderBy('id', 'desc')->paginate(10);
+        return view('edit_categories',compact('category'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)    {
-        //
-        $this->validate($request,['description'=>'required', 'father_category'=>'required']);
-
-        Category::find($id)->update($request->all());
-        return redirect()->route('category.index')->with('success','Categoria actualizado satisfactoriamente');
-
+    public function update(Request $request, $id){
+        DB::table('categories')->where('id', $id)->update(['description' => $request->description, 'father_category' => $request->father_category]);
+        $categories = DB::table('categories')->orderBy('id', 'desc')->paginate(10);
+        return view('categories')->with('categories', $categories);
     }
-
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
-         Category::find($id)->delete();
+        Category::find($id)->delete();
         return redirect()->route('category.index')->with('success','Categoria eliminado satisfactoriamente');
     }
 }
