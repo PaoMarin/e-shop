@@ -16,7 +16,7 @@ class ProductController extends Controller
     {
         //
         $products=Product::orderBy('id','DESC');
-        return view('Product.index',compact('products')); 
+        return view('product.index',compact('products')); 
     }
 
     /**
@@ -27,7 +27,7 @@ class ProductController extends Controller
     public function create()
     {
         
-        return view('Product.create');
+        return view('product.create');
     }
 
     /**
@@ -42,6 +42,14 @@ class ProductController extends Controller
         $this->validate($request,[ 'sku'=>'required','name'=>'required','description'=>'required', 'imagen'=>'required', 'stock'=>'required', 'precio'=>'required']);
         Product::create($request->all());
         return redirect()->route('product.index')->with('success','Producto creado satisfactoriamente');
+    }
+
+    public function getProducts($id)
+    {    
+        $products = DB::table('categories')->join('products', function ($join) use ($id){ $join->on('categories.id', '=', 'products.id_category') ->where('categories.id', '=', $id); }) 
+        ->get();
+        //dd($products);
+        return view('products')->with('products', $products);
     }
 
     /**
