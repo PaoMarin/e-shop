@@ -48,10 +48,10 @@
                             </li>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('categories') }}">{{ __('Categories') }}</a>
+                                <a class="nav-link" href="{{ url('category/index_categories') }}">Categories</a>
                             </li>
                             <li>
-                            <a class="navbar-brand" href="{{ route('login') }}">
+                            <a class="navbar-brand" href="{{ url('shopcar') }}">
                                 <img src="https://st2.depositphotos.com/4845131/7223/v/950/depositphotos_72232095-stock-illustration-icon-shopping-cart.jpg" height="40" alt="mdb logo">
                             </a>
                             </li>
@@ -71,10 +71,10 @@
                                       	$activo = $user->admmin;
                                          if($activo === "f") :?>
                                         <a class="dropdown-item" href="{{ route('login') }}">{{ __('Products') }}</a>
-                                        <a class="dropdown-item" href="{{ route('login') }}">{{ __('Categories') }}</a>
+                                        <a class="dropdown-item" href="/category">{{ __('Categories') }}</a>
                                         <?php else : ?>
-                                        <a class="dropdown-item" href="{{ route('logout') }}">{{ __('Products') }}</a>
-                                        <a class="dropdown-item" href="{{ route('logout') }}">{{ __('Categories') }}</a>
+                                        <a class="dropdown-item" href="/product">{{ __('Products') }}</a>
+                                        <a class="dropdown-item" href="/category">{{ __('Categories') }}</a>
                                         <?php endif; ?>
                                  </div>
                             </li>
@@ -94,6 +94,13 @@
 
         <main class="py-4">
             @yield('content')
+            @yield('categories')
+            @yield('products')
+            @yield('create_categories')
+            @yield('create_products')
+            @yield('edit_categories')
+            @yield('edit_products')
+            @yield('list_categories')
         </main>
     </div>
 </body>
